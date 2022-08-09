@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/app.css" />
+    <script type="module" defer src="/src/js/controller.js"></script>
+    <title>Weather App</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="weather-card">
+        <div class="infoCard">
+          <h1>WEATHER IN [LOCATION NAME]</h1>
+          <ul>
+            <li>Sunrise</li>
+            <li>Sunset</li>
+            <li>Current temp: number</li>
+            <li>Temp feels like:</li>
+            <li>Min temp:</li>
+            <li>Max temp:</li>
+            <li>Weather Description:</li>
+            <li>More description</li>
+            <li>Windspeed mph:</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form">
+        <form id="searchForm">
+          <input
+            type="text"
+            id="searchedLocation"
+            placeholder="Search for a country or city"
+          />
+          <input type="submit" value="Submit" id="submitButton" />
+        </form>
+      </div>
+
+      <div class="curr-week">
+        <div>Card tbc</div>
+      </div>
+    </div>
+  </body>
+</html>
