@@ -13,6 +13,7 @@ class WeatherView extends View {
       <div class="weatherCard">
       <h1>WEATHER IN [LOCATION NAME]</h1>
       <ul>
+      <li>Location: ${weatherData.name}, ${weatherData.country} </li>
         <li>Sunrise: ${weatherData.sunrise} </li>
         <li>Sunset: ${weatherData.sunset} </li>
         <li>Current temp: ${weatherData.tempActual}</li>

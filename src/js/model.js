@@ -8,7 +8,7 @@ import { timeout } from "./helpers.js";
 import weatherView from "./weatherView.js";
 
 ////////////////////////////////////////////////////////////////
-//////// CURRENT LOCATION COORDS/WEATHER (ON PAGE LOAD) //////////////
+//////// CURRENT LOCATION COORDS/WEATHER (ON PAGE LOAD) ///////
 //////////////////////////////////////////////////////////////
 
 export const getLatLon = async function () {
@@ -16,6 +16,7 @@ export const getLatLon = async function () {
     const position = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
+    console.log(position);
 
     return {
       lon: position.coords.longitude,
@@ -25,11 +26,8 @@ export const getLatLon = async function () {
 
   const coords = await getCoords();
 
-  // If searched lcoation == true. call getJSON(seachedLocation)
-  // return error is location not found
-
-  return getJSON(
-    `${API_URL_CURR_LOC}${coords.lat}&lon=${coords.lon}&appid=${KEY}&lang=en`
+  return await getJSON(
+    `${API_URL_CURR_LOC}${coords.lat}&lon=${coords.lon}&appid=${KEY}`
   );
 };
 
@@ -44,6 +42,8 @@ export const getJSON = async function (url, e) {
     const data = await res.json();
     console.log(data);
     const finalWeatherData = {
+      name: data.name,
+      country: data.sys.country,
       clouds: data.clouds.all,
       tempActual: data.main.temp,
       tempFeels: data.main.feels_like,
@@ -84,12 +84,12 @@ export const newUserLocation = submitButton.addEventListener(
         `${API_URL_NEW_LOC}${newLocation}&limit=5&appid=${KEY}`
       );
       const res = await Promise.race([fetchData, timeout(TIMEOUT_SEC)]);
-      const data = await res.json();
-      console.log(data);
-      const newLocationWeather = data[0];
+      const searchResults = await res.json();
+      console.log(searchResults);
+      const newLocationWeather = searchResults[0];
       const newLocationCoords = {
-        lon: newLocationWeather.lat,
-        lat: newLocationWeather.lon,
+        lon: newLocationWeather.lon,
+        lat: newLocationWeather.lat,
       };
       console.log(newLocationCoords);
       const newLocData = await getJSON(
@@ -97,14 +97,6 @@ export const newUserLocation = submitButton.addEventListener(
       );
       const markup = await weatherView.currWeatherMarkup(newLocData);
       weatherView.updateUI(markup);
-
-      // const newLocationMarkup = await weatherView.currWeatherMarkup(
-      //   `${API_URL_CURR_LOC}${newLocationCoords.lat}&lon=${newLocationCoords.lon}&appid=${KEY}&lang=en`
-      // );
-
-      // console.log(newLocationMarkup);
-
-      // weatherView.updateUI(newLocationMarkup);
     } catch (err) {
       console.log(err);
       throw err;
